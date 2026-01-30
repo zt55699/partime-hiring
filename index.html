@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part-Time Data Annotation Jobs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #0f766e;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Intro Section */
+        #intro {
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        #intro .container {
+            text-align: center;
+        }
+
+        #intro h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        #intro .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.15);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+
+        /* Real Cases Section */
+        #cases {
+            background: #f8fafc;
+        }
+
+        #cases h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        #cases .section-desc {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .case-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .case-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+            color: #fff;
+        }
+
+        .case-header h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .case-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+
+        .case-body {
+            padding: 1.5rem;
+        }
+
+        .case-body p {
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        .case-details {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .case-detail {
+            text-align: center;
+        }
+
+        .case-detail span {
+            display: block;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .case-detail strong {
+            color: #0f766e;
+            font-size: 1.1rem;
+        }
+
+        /* Application Section */
+        #apply {
+            background: #fff;
+        }
+
+        #apply h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        #apply .section-desc {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f8fafc;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0f766e;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            width: auto;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(15, 118, 110, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-message h3 {
+            color: #059669;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e293b;
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #intro h1 {
+                font-size: 2rem;
+            }
+
+            #intro .subtitle {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                gap: 1.5rem;
+            }
+
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#intro">Home</a></li>
+            <li><a href="#cases">Stories</a></li>
+            <li><a href="#apply">Apply Now</a></li>
+        </ul>
+    </nav>
+
+    <!-- Intro Section -->
+    <section id="intro">
+        <div class="container">
+            <h1>Part-Time Data Annotation Work</h1>
+            <p class="subtitle">Remote, flexible hours, real pay. Help train machine learning models on your own schedule.</p>
+
+            <div class="features">
+                <div class="feature-card">
+                    <h3>Flexible Hours</h3>
+                    <p>Work whenever suits you best. No fixed schedules, no commute. Good for students, parents, or anyone wanting more control over their time.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Work From Anywhere</h3>
+                    <p>Work from home, a library, or wherever you have internet. All you need is a computer and attention to detail.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Fair Pay</h3>
+                    <p>Earn $15-35/hour depending on task type and your experience level. Weekly payments via PayPal or bank transfer.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Learn As You Go</h3>
+                    <p>Pick up practical knowledge about how machine learning systems are built while getting paid for your work.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stories Section -->
+    <section id="cases">
+        <div class="container">
+            <h2>People Like You</h2>
+            <p class="section-desc">Hear from some of our annotators about how this work fits into their lives.</p>
+
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-header">
+                        <h3>Maria T.</h3>
+                        <span class="case-tag">Graduate Student</span>
+                    </div>
+                    <div class="case-body">
+                        <p>"I'm finishing my PhD in linguistics and needed something flexible that wouldn't interfere with my research schedule. I do text annotation tasks between writing sessions. Some weeks I work 5 hours, some weeks 20. The pay helps cover rent and I've actually learned a lot about how NLP models work."</p>
+                        <div class="case-details">
+                            <div class="case-detail">
+                                <span>With us</span>
+                                <strong>14 months</strong>
+                            </div>
+                            <div class="case-detail">
+                                <span>Hours/week</span>
+                                <strong>10-15</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-header">
+                        <h3>James K.</h3>
+                        <span class="case-tag">Stay-at-home Dad</span>
+                    </div>
+                    <div class="case-body">
+                        <p>"After my second kid was born, my wife and I decided I'd stay home. This lets me bring in extra income during nap times and after bedtime. I mostly do image labeling tasks. It's not glamorous but it's honest work and I can stop whenever I need to."</p>
+                        <div class="case-details">
+                            <div class="case-detail">
+                                <span>With us</span>
+                                <strong>8 months</strong>
+                            </div>
+                            <div class="case-detail">
+                                <span>Hours/week</span>
+                                <strong>12-18</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-header">
+                        <h3>Priya S.</h3>
+                        <span class="case-tag">Software Developer</span>
+                    </div>
+                    <div class="case-body">
+                        <p>"I have a full-time job but wanted to make extra money on the side. I do code review tasks on weekends. It's interesting to see how AI coding assistants are being trained. The pay is good for the time spent, and it keeps my skills sharp."</p>
+                        <div class="case-details">
+                            <div class="case-detail">
+                                <span>With us</span>
+                                <strong>6 months</strong>
+                            </div>
+                            <div class="case-detail">
+                                <span>Hours/week</span>
+                                <strong>5-8</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-header">
+                        <h3>David R.</h3>
+                        <span class="case-tag">Retired Teacher</span>
+                    </div>
+                    <div class="case-body">
+                        <p>"I taught high school English for 32 years. Now I evaluate AI writing and rate chatbot responses. It's mentally engaging, I set my own pace, and it supplements my pension. I appreciate that the work actually matters for making these systems better."</p>
+                        <div class="case-details">
+                            <div class="case-detail">
+                                <span>With us</span>
+                                <strong>11 months</strong>
+                            </div>
+                            <div class="case-detail">
+                                <span>Hours/week</span>
+                                <strong>20-25</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-header">
+                        <h3>Sarah M.</h3>
+                        <span class="case-tag">Freelance Writer</span>
+                    </div>
+                    <div class="case-body">
+                        <p>"Freelance writing income is unpredictable. This fills in the gaps. When I'm waiting on client feedback or between projects, I do annotation work. It's not going to make anyone rich, but it's reliable and I can do it in my pajamas."</p>
+                        <div class="case-details">
+                            <div class="case-detail">
+                                <span>With us</span>
+                                <strong>9 months</strong>
+                            </div>
+                            <div class="case-detail">
+                                <span>Hours/week</span>
+                                <strong>8-15</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-header">
+                        <h3>Chen W.</h3>
+                        <span class="case-tag">College Student</span>
+                    </div>
+                    <div class="case-body">
+                        <p>"I'm studying computer science and this beats working food service. I can work between classes or late at night. The tasks are straightforward once you get the hang of it. I've done about 15,000 image labels so far and it's helped me understand ML datasets better."</p>
+                        <div class="case-details">
+                            <div class="case-detail">
+                                <span>With us</span>
+                                <strong>7 months</strong>
+                            </div>
+                            <div class="case-detail">
+                                <span>Hours/week</span>
+                                <strong>10-20</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Section -->
+    <section id="apply">
+        <div class="container">
+            <h2>Start Your Application</h2>
+            <p class="section-desc">Fill out the form below to join our annotation team. We review applications within 48 hours.</p>
+
+            <div class="form-container">
+                <form id="application-form">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="you@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">Country *</label>
+                        <select id="country" name="country" required>
+                            <option value="">Select your country</option>
+                            <option value="US">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="AU">Australia</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IN">India</option>
+                            <option value="PH">Philippines</option>
+                            <option value="BR">Brazil</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availability">Weekly Availability *</label>
+                        <select id="availability" name="availability" required>
+                            <option value="">Select hours per week</option>
+                            <option value="5-10">5-10 hours</option>
+                            <option value="10-20">10-20 hours</option>
+                            <option value="20-30">20-30 hours</option>
+                            <option value="30+">30+ hours</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Areas of Interest *</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="interests" value="image">
+                                Image Annotation
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="interests" value="text">
+                                Text/NLP Tasks
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="interests" value="audio">
+                                Audio Transcription
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="interests" value="llm">
+                                LLM Rating
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="interests" value="code">
+                                Code Review
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Relevant Experience</label>
+                        <textarea id="experience" name="experience" placeholder="Tell us about any relevant experience (data entry, quality assurance, writing, coding, etc.)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="languages">Languages Spoken</label>
+                        <input type="text" id="languages" name="languages" placeholder="e.g., English (native), Spanish (fluent)">
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit Application</button>
+                </form>
+
+                <div class="success-message" id="success-message">
+                    <h3>Application Submitted</h3>
+                    <p>Thank you for your interest. We'll review your application and get back to you within 48 hours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Part-Time Hiring. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // Form submission handling
+        const form = document.getElementById('application-form');
+        const successMessage = document.getElementById('success-message');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate at least one interest is selected
+            const interests = form.querySelectorAll('input[name="interests"]:checked');
+            if (interests.length === 0) {
+                alert('Please select at least one area of interest.');
+                return;
+            }
+
+            // Collect form data
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key === 'interests') {
+                    if (!data[key]) data[key] = [];
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            });
+
+            // Log data (in production, send to server)
+            console.log('Application submitted:', data);
+
+            // Show success message
+            form.style.display = 'none';
+            successMessage.classList.add('show');
+
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    </script>
+</body>
+</html>
