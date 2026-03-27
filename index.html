@@ -751,8 +751,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required placeholder="you@example.com">
+                            <label for="phone">手机号码 *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="请输入手机号码">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="age">年龄 *</label>
+                            <input type="number" id="age" name="age" required min="18" max="99" placeholder="请输入年龄">
                         </div>
 
                         <div class="form-group">
@@ -783,36 +788,6 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label>Areas of Interest *</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="interests" value="image">
-                                    <span>Image Annotation</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="interests" value="text">
-                                    <span>Text/NLP Tasks</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="interests" value="audio">
-                                    <span>Audio Transcription</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="interests" value="llm">
-                                    <span>LLM Rating</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="interests" value="code">
-                                    <span>Code Review</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="experience">Relevant Experience</label>
-                            <textarea id="experience" name="experience" placeholder="Tell us about any relevant experience (data entry, quality assurance, writing, coding, etc.)"></textarea>
-                        </div>
 
                         <div class="form-group">
                             <label for="languages">Languages Spoken</label>
@@ -855,24 +830,9 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Validate at least one interest is selected
-            const interests = form.querySelectorAll('input[name="interests"]:checked');
-            if (interests.length === 0) {
-                alert('Please select at least one area of interest.');
-                return;
-            }
-
             // Collect form data
             const formData = new FormData(form);
-            const data = {};
-            formData.forEach((value, key) => {
-                if (key === 'interests') {
-                    if (!data[key]) data[key] = [];
-                    data[key].push(value);
-                } else {
-                    data[key] = value;
-                }
-            });
+            const data = Object.fromEntries(formData);
 
             // Log data (in production, send to server)
             console.log('Application submitted:', data);
