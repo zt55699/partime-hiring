@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        /* Login Screen */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-box {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #0f766e;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #0f766e;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            opacity: 0.9;
+        }
+
+        .login-error {
+            color: #dc2626;
+            text-align: center;
+            margin-top: 0.75rem;
+            display: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Admin Dashboard */
+        .admin-header {
+            background: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-size: 1.3rem;
+            color: #0f766e;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: #e2e8f0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: #cbd5e1;
+        }
+
+        .admin-content {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            font-size: 1.15rem;
+            color: #0f766e;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0fdfa;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.65rem 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0f766e;
+        }
+
+        .form-group .hint {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.25rem;
+        }
+
+        .save-btn {
+            padding: 0.65rem 1.5rem;
+            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-msg {
+            display: inline-block;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-msg.success {
+            color: #16a34a;
+        }
+
+        .status-msg.error {
+            color: #dc2626;
+        }
+
+        .sheet-container {
+            width: 100%;
+            height: 500px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fafafa;
+        }
+
+        .sheet-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .sheet-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #999;
+            font-size: 0.95rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .current-values {
+            background: #f0fdfa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .current-values strong {
+            color: #0f766e;
+        }
+
+        .current-values a {
+            color: #0f766e;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <form id="login-form">
+                <input type="password" id="password-input" placeholder="Enter admin password" autofocus>
+                <button type="submit">Login</button>
+            </form>
+            <p class="login-error" id="login-error">Incorrect password. Try again.</p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (hidden until login) -->
+    <div id="admin-dashboard" class="hidden">
+        <div class="admin-header">
+            <h1>Admin Panel</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <div class="admin-content">
+            <!-- Google Script URL Config -->
+            <div class="card">
+                <h2>Google Apps Script URL</h2>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
+                    This is the deployed Apps Script URL that receives form submissions and stores config.
+                </p>
+                <div class="form-group">
+                    <label for="script-url">Apps Script Web App URL</label>
+                    <input type="url" id="script-url" placeholder="https://script.google.com/macros/s/.../exec">
+                    <p class="hint">Deploy your Apps Script as a Web App and paste the URL here.</p>
+                </div>
+                <button class="save-btn" onclick="saveScriptUrl()">Save Script URL</button>
+                <span class="status-msg" id="script-status"></span>
+            </div>
+
+            <!-- Online Support URL Config -->
+            <div class="card">
+                <h2>Online Support Link</h2>
+                <div class="current-values" id="current-support-url" style="display: none;">
+                    <strong>Current:</strong> <a id="current-support-link" href="#" target="_blank"></a>
+                </div>
+                <div class="form-group">
+                    <label for="support-url">Support URL (e.g. Telegram group link)</label>
+                    <input type="url" id="support-url" placeholder="https://t.me/your_group">
+                    <p class="hint">This URL will be used for the "Online Support" button on the landing page.</p>
+                </div>
+                <button class="save-btn" onclick="saveSupportUrl()">Save Support URL</button>
+                <span class="status-msg" id="support-status"></span>
+            </div>
+
+            <!-- Google Sheet Viewer -->
+            <div class="card">
+                <h2>Application Submissions</h2>
+                <div class="form-group">
+                    <label for="sheet-embed-url">Google Sheet Embed URL</label>
+                    <input type="url" id="sheet-embed-url" placeholder="https://docs.google.com/spreadsheets/d/.../pubhtml">
+                    <p class="hint">In Google Sheets: File > Share > Publish to web > Copy the embed link. Then paste here.</p>
+                </div>
+                <button class="save-btn" onclick="saveSheetUrl()" style="margin-bottom: 1rem;">Save & Load Sheet</button>
+                <span class="status-msg" id="sheet-status"></span>
+                <div class="sheet-container" id="sheet-container">
+                    <div class="sheet-placeholder" id="sheet-placeholder">
+                        Set the Google Sheet embed URL above to view submissions here.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Password Protection ---
+        // Default password hash (SHA-256 of "admin123")
+        // Change this by running: echo -n "yourpassword" | sha256sum
+        const PASSWORD_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
+
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password-input').value;
+            const hash = await hashPassword(password);
+
+            if (hash === PASSWORD_HASH) {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                document.getElementById('login-overlay').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                loadConfig();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+                document.getElementById('password-input').value = '';
+            }
+        });
+
+        // Auto-login if session is still active
+        if (sessionStorage.getItem('admin_authenticated') === 'true') {
+            document.getElementById('login-overlay').classList.add('hidden');
+            document.getElementById('admin-dashboard').classList.remove('hidden');
+            loadConfig();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('admin_authenticated');
+            location.reload();
+        }
+
+        // --- Config Management ---
+        function getScriptUrl() {
+            return localStorage.getItem('google_script_url') || '';
+        }
+
+        function loadConfig() {
+            // Load saved script URL
+            const scriptUrl = getScriptUrl();
+            if (scriptUrl) {
+                document.getElementById('script-url').value = scriptUrl;
+            }
+
+            // Load saved sheet embed URL
+            const sheetUrl = localStorage.getItem('sheet_embed_url') || '';
+            if (sheetUrl) {
+                document.getElementById('sheet-embed-url').value = sheetUrl;
+                loadSheetEmbed(sheetUrl);
+            }
+
+            // Load support URL from Apps Script
+            if (scriptUrl) {
+                fetchSupportUrl(scriptUrl);
+            }
+        }
+
+        function saveScriptUrl() {
+            const url = document.getElementById('script-url').value.trim();
+            if (!url) {
+                showStatus('script-status', 'Please enter a URL.', 'error');
+                return;
+            }
+            localStorage.setItem('google_script_url', url);
+            showStatus('script-status', 'Saved!', 'success');
+            fetchSupportUrl(url);
+        }
+
+        async function saveSupportUrl() {
+            const scriptUrl = getScriptUrl();
+            if (!scriptUrl) {
+                showStatus('support-status', 'Set the Apps Script URL first.', 'error');
+                return;
+            }
+
+            const supportUrl = document.getElementById('support-url').value.trim();
+            if (!supportUrl) {
+                showStatus('support-status', 'Please enter a URL.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'setConfig', key: 'support_url', value: supportUrl }),
+                });
+                const result = await response.json();
+                if (result.result === 'success') {
+                    showStatus('support-status', 'Saved!', 'success');
+                    showCurrentSupportUrl(supportUrl);
+                } else {
+                    showStatus('support-status', 'Failed to save.', 'error');
+                }
+            } catch (error) {
+                showStatus('support-status', 'Network error.', 'error');
+            }
+        }
+
+        async function fetchSupportUrl(scriptUrl) {
+            try {
+                const response = await fetch(scriptUrl + '?action=getConfig&key=support_url');
+                const result = await response.json();
+                if (result.result === 'success' && result.value) {
+                    document.getElementById('support-url').value = result.value;
+                    showCurrentSupportUrl(result.value);
+                }
+            } catch (error) {
+                // Config not set yet, that's fine
+            }
+        }
+
+        function showCurrentSupportUrl(url) {
+            const container = document.getElementById('current-support-url');
+            const link = document.getElementById('current-support-link');
+            link.href = url;
+            link.textContent = url;
+            container.style.display = 'block';
+        }
+
+        function saveSheetUrl() {
+            const url = document.getElementById('sheet-embed-url').value.trim();
+            if (!url) {
+                showStatus('sheet-status', 'Please enter a URL.', 'error');
+                return;
+            }
+            localStorage.setItem('sheet_embed_url', url);
+            loadSheetEmbed(url);
+            showStatus('sheet-status', 'Saved!', 'success');
+        }
+
+        function loadSheetEmbed(url) {
+            const container = document.getElementById('sheet-container');
+            const placeholder = document.getElementById('sheet-placeholder');
+            if (placeholder) placeholder.remove();
+
+            // Remove existing iframe
+            const existing = container.querySelector('iframe');
+            if (existing) existing.remove();
+
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.setAttribute('loading', 'lazy');
+            container.appendChild(iframe);
+        }
+
+        function showStatus(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.className = 'status-msg ' + type;
+            setTimeout(() => { el.textContent = ''; }, 3000);
+        }
+    </script>
+</body>
+</html>

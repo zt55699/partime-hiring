@@ -865,6 +865,20 @@
 
         const GOOGLE_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
 
+        // Fetch online support URL from config
+        (async function loadSupportUrl() {
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getConfig&key=support_url');
+                const result = await response.json();
+                if (result.result === 'success' && result.value) {
+                    const supportBtn = document.querySelector('.online-support-btn');
+                    if (supportBtn) supportBtn.href = result.value;
+                }
+            } catch (e) {
+                // Config not available, keep default link
+            }
+        })();
+
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
