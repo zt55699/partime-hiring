@@ -433,6 +433,30 @@
             transform: none;
         }
 
+        .online-support-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 1rem;
+            margin-top: 0.75rem;
+            background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .online-support-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(24, 144, 255, 0.4);
+        }
+
         .success-message {
             display: none;
             text-align: center;
@@ -526,7 +550,7 @@
         <div class="container">
             <div class="hero-layout">
                 <div class="hero-content">
-                    <h1>Part-Time Data Annotation Work</h1>
+                    <h1>Work From Home Positions</h1>
                     <p class="subtitle">Remote, flexible hours, real pay. Help train machine learning models on your own schedule. No experience required - we'll teach you everything you need to know.</p>
                     <a href="#apply" class="cta-button">Start Your Application</a>
                 </div>
@@ -564,7 +588,7 @@
                         </svg>
                     </div>
                     <h3>Fair Pay</h3>
-                    <p>Earn $15-35/hour depending on task type and your experience level. Weekly payments via PayPal or bank transfer.</p>
+                    <p>Earn $15-35/hour depending on task type and your experience level. Daily payments via PayPal or bank transfer.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -751,13 +775,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="phone">手机号码 *</label>
-                            <input type="tel" id="phone" name="phone" required placeholder="请输入手机号码">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
                         </div>
 
                         <div class="form-group">
-                            <label for="age">年龄 *</label>
-                            <input type="number" id="age" name="age" required min="18" max="99" placeholder="请输入年龄">
+                            <label for="age">Age *</label>
+                            <input type="number" id="age" name="age" required min="18" max="99" placeholder="Enter your age">
                         </div>
 
                         <div class="form-group">
@@ -795,6 +819,12 @@
                         </div>
 
                         <button type="submit" class="submit-btn">Submit Application</button>
+                        <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="online-support-btn">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            Online Support
+                        </a>
                     </form>
 
                     <div class="success-message" id="success-message">
