@@ -1,4 +1,4 @@
-# Part-Time Hiring Landing Page
+# Work From Home Positions - Landing Page
 
 A single-page web application for recruiting part-time remote workers for AI data annotation tasks.
 
@@ -13,6 +13,9 @@ https://zt55699.github.io/partime-hiring/
   - Hero/Intro with key benefits
   - Testimonials from current annotators
   - Application form with validation
+- **Google Sheets Integration** - Form submissions are sent to a Google Sheet in real time via Apps Script
+- **Anti-Spam Protection** - Honeypot field + server-side validation to block bots
+- **Online Support** - Button linking to Telegram for live support
 - **No Dependencies** - Pure HTML, CSS, and JavaScript
 - **Fast Loading** - Single file, minimal external resources (only Unsplash images)
 
@@ -32,18 +35,26 @@ Six testimonials from different backgrounds:
 
 ### 3. Application Form
 Collects:
-- Name, email, country
+- Full name, phone, age, country
 - Weekly availability
-- Areas of interest (image, text, audio, LLM, code)
-- Relevant experience
 - Languages spoken
 
-## Development
+Submissions are stored in a Google Sheet via Google Apps Script webhook.
+
+## Setup
+
+### Google Sheets Integration
+
+1. Create a Google Sheet with headers: `Timestamp | Full Name | Phone | Age | Country | Availability | Languages`
+2. Go to **Extensions > Apps Script** and add the webhook script (see `doPost` function)
+3. Deploy as a Web App (Execute as: Me, Access: Anyone)
+4. Paste the deployment URL into `GOOGLE_SCRIPT_URL` in `index.html`
+
+### Local Development
 
 No build process required. Just open `index.html` in a browser.
 
 ```bash
-# Local development server
 python3 -m http.server 8080
 ```
 
