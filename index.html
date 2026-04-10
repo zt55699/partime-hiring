@@ -890,15 +890,20 @@
             const data = Object.fromEntries(formData);
 
             try {
-                await fetch(GOOGLE_SCRIPT_URL, {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    redirect: 'follow',
                     body: JSON.stringify(data),
                 });
-                // no-cors returns opaque response, assume success
-                form.style.display = 'none';
-                successMessage.classList.add('show');
-                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (response.ok || response.type === 'opaqueredirect') {
+                    form.style.display = 'none';
+                    successMessage.classList.add('show');
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    alert('Submission failed. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Application';
+                }
             } catch (error) {
                 alert('Network error. Please check your connection and try again.');
                 submitBtn.disabled = false;
