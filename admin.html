@@ -270,21 +270,6 @@
         </div>
 
         <div class="admin-content">
-            <!-- Google Script URL Config -->
-            <div class="card">
-                <h2>Google Apps Script URL</h2>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
-                    This is the deployed Apps Script URL that receives form submissions and stores config.
-                </p>
-                <div class="form-group">
-                    <label for="script-url">Apps Script Web App URL</label>
-                    <input type="url" id="script-url" placeholder="https://script.google.com/macros/s/.../exec">
-                    <p class="hint">Deploy your Apps Script as a Web App and paste the URL here.</p>
-                </div>
-                <button class="save-btn" onclick="saveScriptUrl()">Save Script URL</button>
-                <span class="status-msg" id="script-status"></span>
-            </div>
-
             <!-- Online Support URL Config -->
             <div class="card">
                 <h2>Online Support Link</h2>
@@ -362,48 +347,46 @@
         }
 
         // --- Config Management ---
-        function getScriptUrl() {
-            return localStorage.getItem('google_script_url') || '';
-        }
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCdSHk6C7Y7QQbqgoARnHrfhxnlCYf1sxNjAguHFUGri8V_E4EdIOe40qAakm1_U5I/exec';
 
         function loadConfig() {
-            // Load saved script URL
-            const scriptUrl = getScriptUrl();
-            if (scriptUrl) {
-                document.getElementById('script-url').value = scriptUrl;
-            }
+            // Script URL is hardcoded
+            fetchConfigFromSheet('support_url', function(value) {
+                if (value) {
+                    document.getElementById('support-url').value = value;
+                    showCurrentSupportUrl(value);
+                }
+            });
+            fetchConfigFromSheet('sheet_embed_url', function(value) {
+                if (value) {
+                    document.getElementById('sheet-embed-url').value = value;
+                    loadSheetEmbed(value);
+                }
+            });
+        }
 
-            // Load saved sheet embed URL
-            const sheetUrl = localStorage.getItem('sheet_embed_url') || '';
-            if (sheetUrl) {
-                document.getElementById('sheet-embed-url').value = sheetUrl;
-                loadSheetEmbed(sheetUrl);
-            }
-
-            // Load support URL from Apps Script
-            if (scriptUrl) {
-                fetchSupportUrl(scriptUrl);
+        async function fetchConfigFromSheet(key, callback) {
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getConfig&key=' + key);
+                const result = await response.json();
+                if (result.result === 'success' && result.value) {
+                    callback(result.value);
+                }
+            } catch (error) {
+                console.warn('Failed to fetch config for ' + key + ':', error);
             }
         }
 
-        function saveScriptUrl() {
-            const url = document.getElementById('script-url').value.trim();
-            if (!url) {
-                showStatus('script-status', 'Please enter a URL.', 'error');
-                return;
-            }
-            localStorage.setItem('google_script_url', url);
-            showStatus('script-status', 'Saved!', 'success');
-            fetchSupportUrl(url);
+        async function saveConfigToSheet(key, value) {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                redirect: 'follow',
+                body: JSON.stringify({ action: 'setConfig', key: key, value: value }),
+            });
+            return response.ok || response.type === 'opaqueredirect';
         }
 
         async function saveSupportUrl() {
-            const scriptUrl = getScriptUrl();
-            if (!scriptUrl) {
-                showStatus('support-status', 'Set the Apps Script URL first.', 'error');
-                return;
-            }
-
             const supportUrl = document.getElementById('support-url').value.trim();
             if (!supportUrl) {
                 showStatus('support-status', 'Please enter a URL.', 'error');
@@ -411,32 +394,11 @@
             }
 
             try {
-                const response = await fetch(scriptUrl, {
-                    method: 'POST',
-                    redirect: 'follow',
-                    body: JSON.stringify({ action: 'setConfig', key: 'support_url', value: supportUrl }),
-                });
-                if (response.ok || response.type === 'opaqueredirect') {
-                    showStatus('support-status', 'Saved!', 'success');
-                    showCurrentSupportUrl(supportUrl);
-                } else {
-                    showStatus('support-status', 'Failed to save.', 'error');
-                }
+                await saveConfigToSheet('support_url', supportUrl);
+                showStatus('support-status', 'Saved!', 'success');
+                showCurrentSupportUrl(supportUrl);
             } catch (error) {
                 showStatus('support-status', 'Network error: ' + error.message, 'error');
-            }
-        }
-
-        async function fetchSupportUrl(scriptUrl) {
-            try {
-                const response = await fetch(scriptUrl + '?action=getConfig&key=support_url');
-                const result = await response.json();
-                if (result.result === 'success' && result.value) {
-                    document.getElementById('support-url').value = result.value;
-                    showCurrentSupportUrl(result.value);
-                }
-            } catch (error) {
-                // Config not set yet, that's fine
             }
         }
 
@@ -448,15 +410,20 @@
             container.style.display = 'block';
         }
 
-        function saveSheetUrl() {
+        async function saveSheetUrl() {
             const url = document.getElementById('sheet-embed-url').value.trim();
             if (!url) {
                 showStatus('sheet-status', 'Please enter a URL.', 'error');
                 return;
             }
-            localStorage.setItem('sheet_embed_url', url);
-            loadSheetEmbed(url);
-            showStatus('sheet-status', 'Saved!', 'success');
+
+            try {
+                await saveConfigToSheet('sheet_embed_url', url);
+                loadSheetEmbed(url);
+                showStatus('sheet-status', 'Saved!', 'success');
+            } catch (error) {
+                showStatus('sheet-status', 'Network error: ' + error.message, 'error');
+            }
         }
 
         function loadSheetEmbed(url) {
