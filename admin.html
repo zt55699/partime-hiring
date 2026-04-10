@@ -348,9 +348,13 @@
 
         // --- Config Management ---
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCdSHk6C7Y7QQbqgoARnHrfhxnlCYf1sxNjAguHFUGri8V_E4EdIOe40qAakm1_U5I/exec';
+        const DEFAULT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFRQrT1HnSPRjNQ_4ZZTcbECVI7kgHbpqWcRll9me1ChpIGQZdiBCEJwi4xBe6LWLq9755RJNSWz-H/pubhtml';
 
         function loadConfig() {
-            // Script URL is hardcoded
+            // Load sheet embed with default fallback
+            document.getElementById('sheet-embed-url').value = DEFAULT_SHEET_URL;
+            loadSheetEmbed(DEFAULT_SHEET_URL);
+
             fetchConfigFromSheet('support_url', function(value) {
                 if (value) {
                     document.getElementById('support-url').value = value;
