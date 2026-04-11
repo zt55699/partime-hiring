@@ -435,19 +435,22 @@
         async function saveSupportConfig() {
             const supportUrl = document.getElementById('support-url').value.trim();
             const iconPreview = document.getElementById('icon-preview').src;
+            const hasIcon = iconPreview && !iconPreview.endsWith('admin.html') && iconPreview.startsWith('data:');
 
-            if (!supportUrl) {
-                showStatus('support-status', 'Please enter a URL.', 'error');
+            if (!supportUrl && !hasIcon) {
+                showStatus('support-status', 'Please enter a URL or upload an icon.', 'error');
                 return;
             }
 
             try {
-                await saveConfigToSheet('support_url', supportUrl);
-                if (iconPreview && !iconPreview.endsWith('admin.html')) {
+                if (supportUrl) {
+                    await saveConfigToSheet('support_url', supportUrl);
+                    showCurrentSupportUrl(supportUrl);
+                }
+                if (hasIcon) {
                     await saveConfigToSheet('support_icon', iconPreview);
                 }
                 showStatus('support-status', 'Saved!', 'success');
-                showCurrentSupportUrl(supportUrl);
             } catch (error) {
                 showStatus('support-status', 'Network error: ' + error.message, 'error');
             }
