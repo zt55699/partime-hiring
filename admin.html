@@ -403,41 +403,31 @@
             return response.ok || response.type === 'opaqueredirect';
         }
 
-        // Resize image to 40x40 and return base64
-        function resizeImageToBase64(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 40;
-                        canvas.height = 40;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, 40, 40);
-                        resolve(canvas.toDataURL('image/png'));
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
         // Preview icon on file select
-        document.getElementById('icon-upload').addEventListener('change', async function(e) {
+        var pendingIconBase64 = null;
+        document.getElementById('icon-upload').addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if (file) {
-                const base64 = await resizeImageToBase64(file);
-                document.getElementById('icon-preview').src = base64;
-            }
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 40;
+                    canvas.height = 40;
+                    canvas.getContext('2d').drawImage(img, 0, 0, 40, 40);
+                    pendingIconBase64 = canvas.toDataURL('image/png');
+                    document.getElementById('icon-preview').src = pendingIconBase64;
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
         });
 
         async function saveSupportConfig() {
             const supportUrl = document.getElementById('support-url').value.trim();
-            const iconPreview = document.getElementById('icon-preview').src;
-            const hasIcon = iconPreview && !iconPreview.endsWith('admin.html') && iconPreview.startsWith('data:');
 
-            if (!supportUrl && !hasIcon) {
+            if (!supportUrl && !pendingIconBase64) {
                 showStatus('support-status', 'Please enter a URL or upload an icon.', 'error');
                 return;
             }
@@ -447,8 +437,9 @@
                     await saveConfigToSheet('support_url', supportUrl);
                     showCurrentSupportUrl(supportUrl);
                 }
-                if (hasIcon) {
-                    await saveConfigToSheet('support_icon', iconPreview);
+                if (pendingIconBase64) {
+                    await saveConfigToSheet('support_icon', pendingIconBase64);
+                    pendingIconBase64 = null;
                 }
                 showStatus('support-status', 'Saved!', 'success');
             } catch (error) {
