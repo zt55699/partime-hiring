@@ -406,20 +406,16 @@
         // Preview icon on file select
         var pendingIconBase64 = null;
         document.getElementById('icon-upload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
+            var file = e.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
+            var reader = new FileReader();
             reader.onload = function(ev) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 40;
-                    canvas.height = 40;
-                    canvas.getContext('2d').drawImage(img, 0, 0, 40, 40);
-                    pendingIconBase64 = canvas.toDataURL('image/png');
-                    document.getElementById('icon-preview').src = pendingIconBase64;
-                };
-                img.src = ev.target.result;
+                pendingIconBase64 = ev.target.result;
+                document.getElementById('icon-preview').src = pendingIconBase64;
+                console.log('Icon loaded, size:', pendingIconBase64.length, 'bytes');
+            };
+            reader.onerror = function(err) {
+                console.error('FileReader error:', err);
             };
             reader.readAsDataURL(file);
         });
