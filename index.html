@@ -588,7 +588,7 @@
                         </svg>
                     </div>
                     <h3>Fair Pay</h3>
-                    <p>Earn $15-35/hour depending on task type and your experience level. Daily payments via PayPal or bank transfer.</p>
+                    <p>Earn $15-35/hour depending on task type and your experience level. Daily payments via Cash App or bank transfer.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -826,7 +826,8 @@
 
                         <button type="submit" class="submit-btn">Submit Application</button>
                         <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="online-support-btn">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <img id="support-icon" src="" alt="" style="width: 20px; height: 20px; display: none;">
+                            <svg id="support-icon-default" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                             </svg>
                             Online Support
@@ -865,17 +866,29 @@
 
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCdSHk6C7Y7QQbqgoARnHrfhxnlCYf1sxNjAguHFUGri8V_E4EdIOe40qAakm1_U5I/exec';
 
-        // Fetch online support URL from config
-        (async function loadSupportUrl() {
+        // Fetch online support config
+        (async function loadSupportConfig() {
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getConfig&key=support_url');
-                const result = await response.json();
-                if (result.result === 'success' && result.value) {
+                const [urlRes, iconRes] = await Promise.all([
+                    fetch(GOOGLE_SCRIPT_URL + '?action=getConfig&key=support_url'),
+                    fetch(GOOGLE_SCRIPT_URL + '?action=getConfig&key=support_icon'),
+                ]);
+                const urlData = await urlRes.json();
+                const iconData = await iconRes.json();
+
+                if (urlData.result === 'success' && urlData.value) {
                     const supportBtn = document.querySelector('.online-support-btn');
-                    if (supportBtn) supportBtn.href = result.value;
+                    if (supportBtn) supportBtn.href = urlData.value;
+                }
+                if (iconData.result === 'success' && iconData.value) {
+                    const iconImg = document.getElementById('support-icon');
+                    const iconSvg = document.getElementById('support-icon-default');
+                    iconImg.src = iconData.value;
+                    iconImg.style.display = 'inline';
+                    iconSvg.style.display = 'none';
                 }
             } catch (e) {
-                // Config not available, keep default link
+                // Config not available, keep defaults
             }
         })();
 

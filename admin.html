@@ -270,18 +270,26 @@
         </div>
 
         <div class="admin-content">
-            <!-- Online Support URL Config -->
+            <!-- Online Support Config -->
             <div class="card">
-                <h2>Online Support Link</h2>
+                <h2>Online Support</h2>
                 <div class="current-values" id="current-support-url" style="display: none;">
-                    <strong>Current:</strong> <a id="current-support-link" href="#" target="_blank"></a>
+                    <strong>Current URL:</strong> <a id="current-support-link" href="#" target="_blank"></a>
                 </div>
                 <div class="form-group">
                     <label for="support-url">Support URL (e.g. Telegram group link)</label>
                     <input type="url" id="support-url" placeholder="https://t.me/your_group">
                     <p class="hint">This URL will be used for the "Online Support" button on the landing page.</p>
                 </div>
-                <button class="save-btn" onclick="saveSupportUrl()">Save Support URL</button>
+                <div class="form-group">
+                    <label>Support Icon</label>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <img id="icon-preview" src="" alt="No icon" style="width: 40px; height: 40px; border: 2px solid #e2e8f0; border-radius: 8px; object-fit: contain; background: #fafafa;">
+                        <input type="file" id="icon-upload" accept="image/*" style="flex: 1;">
+                    </div>
+                    <p class="hint">Upload a small icon (recommended 40x40px). It will be resized and stored as base64.</p>
+                </div>
+                <button class="save-btn" onclick="saveSupportConfig()">Save Support Settings</button>
                 <span class="status-msg" id="support-status"></span>
             </div>
 
@@ -361,6 +369,11 @@
                     showCurrentSupportUrl(value);
                 }
             });
+            fetchConfigFromSheet('support_icon', function(value) {
+                if (value) {
+                    document.getElementById('icon-preview').src = value;
+                }
+            });
             fetchConfigFromSheet('sheet_embed_url', function(value) {
                 if (value) {
                     document.getElementById('sheet-embed-url').value = value;
@@ -390,8 +403,39 @@
             return response.ok || response.type === 'opaqueredirect';
         }
 
-        async function saveSupportUrl() {
+        // Resize image to 40x40 and return base64
+        function resizeImageToBase64(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 40;
+                        canvas.height = 40;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, 40, 40);
+                        resolve(canvas.toDataURL('image/png'));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Preview icon on file select
+        document.getElementById('icon-upload').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const base64 = await resizeImageToBase64(file);
+                document.getElementById('icon-preview').src = base64;
+            }
+        });
+
+        async function saveSupportConfig() {
             const supportUrl = document.getElementById('support-url').value.trim();
+            const iconPreview = document.getElementById('icon-preview').src;
+
             if (!supportUrl) {
                 showStatus('support-status', 'Please enter a URL.', 'error');
                 return;
@@ -399,6 +443,9 @@
 
             try {
                 await saveConfigToSheet('support_url', supportUrl);
+                if (iconPreview && !iconPreview.endsWith('admin.html')) {
+                    await saveConfigToSheet('support_icon', iconPreview);
+                }
                 showStatus('support-status', 'Saved!', 'success');
                 showCurrentSupportUrl(supportUrl);
             } catch (error) {
