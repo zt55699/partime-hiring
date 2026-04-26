@@ -204,32 +204,6 @@
             color: #dc2626;
         }
 
-        .sheet-container {
-            width: 100%;
-            height: 500px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #fafafa;
-        }
-
-        .sheet-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .sheet-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #999;
-            font-size: 0.95rem;
-            text-align: center;
-            padding: 2rem;
-        }
-
         .current-values {
             background: #f0fdfa;
             border-radius: 8px;
@@ -245,6 +219,69 @@
         .current-values a {
             color: #0f766e;
             word-break: break-all;
+        }
+
+        /* Files Table */
+        .files-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .files-table th,
+        .files-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .files-table th {
+            background: #f8fafc;
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .files-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .files-empty {
+            text-align: center;
+            padding: 2rem;
+            color: #94a3b8;
+        }
+
+        .btn-download {
+            padding: 0.35rem 0.75rem;
+            background: #0f766e;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-download:hover {
+            background: #115e59;
+        }
+
+        .btn-delete {
+            padding: 0.35rem 0.75rem;
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
         }
     </style>
 </head>
@@ -287,123 +324,97 @@
                         <img id="icon-preview" src="" alt="No icon" style="width: 40px; height: 40px; border: 2px solid #e2e8f0; border-radius: 8px; object-fit: contain; background: #fafafa;">
                         <input type="file" id="icon-upload" accept="image/*" style="flex: 1;">
                     </div>
-                    <p class="hint">Upload a small icon (recommended 40x40px). It will be resized and stored as base64.</p>
+                    <p class="hint">Upload a small icon (recommended 40x40px). It will be stored as base64.</p>
                 </div>
                 <button class="save-btn" onclick="saveSupportConfig()">Save Support Settings</button>
                 <span class="status-msg" id="support-status"></span>
             </div>
 
-            <!-- Google Sheet Viewer -->
+            <!-- Submission Files -->
             <div class="card">
-                <h2>Application Submissions</h2>
-                <div class="form-group">
-                    <label for="sheet-embed-url">Google Sheet Embed URL</label>
-                    <input type="url" id="sheet-embed-url" placeholder="https://docs.google.com/spreadsheets/d/.../pubhtml">
-                    <p class="hint">In Google Sheets: File > Share > Publish to web > Copy the embed link. Then paste here.</p>
+                <h2>Submission Files</h2>
+                <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1rem;">
+                    Each day's form submissions are saved as an Excel file. Download or delete them below.
+                </p>
+                <div id="files-list">
+                    <div class="files-empty">Loading...</div>
                 </div>
-                <button class="save-btn" onclick="saveSheetUrl()" style="margin-bottom: 1rem;">Save & Load Sheet</button>
-                <span class="status-msg" id="sheet-status"></span>
-                <div class="sheet-container" id="sheet-container">
-                    <div class="sheet-placeholder" id="sheet-placeholder">
-                        Set the Google Sheet embed URL above to view submissions here.
-                    </div>
-                </div>
+                <span class="status-msg" id="files-status"></span>
             </div>
         </div>
     </div>
 
     <script>
-        // --- Password Protection ---
-        // Default password hash (SHA-256 of "admin123")
-        // Change this by running: echo -n "yourpassword" | sha256sum
-        const PASSWORD_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
+        const API_BASE = '/api';
 
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        function getAuthHeaders() {
+            const pw = sessionStorage.getItem('admin_password');
+            return pw ? { 'Authorization': 'Bearer ' + pw } : {};
         }
 
         document.getElementById('login-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const password = document.getElementById('password-input').value;
-            const hash = await hashPassword(password);
 
-            if (hash === PASSWORD_HASH) {
-                sessionStorage.setItem('admin_authenticated', 'true');
-                document.getElementById('login-overlay').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                loadConfig();
-            } else {
+            // Verify password by making an authenticated request to the server
+            try {
+                const res = await fetch(API_BASE + '/files', {
+                    headers: { 'Authorization': 'Bearer ' + password }
+                });
+                if (res.ok) {
+                    sessionStorage.setItem('admin_authenticated', 'true');
+                    sessionStorage.setItem('admin_password', password);
+                    document.getElementById('login-overlay').classList.add('hidden');
+                    document.getElementById('admin-dashboard').classList.remove('hidden');
+                    loadConfig();
+                    loadFiles();
+                } else {
+                    document.getElementById('login-error').style.display = 'block';
+                    document.getElementById('password-input').value = '';
+                }
+            } catch (err) {
                 document.getElementById('login-error').style.display = 'block';
                 document.getElementById('password-input').value = '';
             }
         });
 
-        // Auto-login if session is still active
-        if (sessionStorage.getItem('admin_authenticated') === 'true') {
-            document.getElementById('login-overlay').classList.add('hidden');
-            document.getElementById('admin-dashboard').classList.remove('hidden');
-            loadConfig();
+        if (sessionStorage.getItem('admin_authenticated') === 'true' && sessionStorage.getItem('admin_password')) {
+            fetch(API_BASE + '/files', { headers: getAuthHeaders() }).then(function(res) {
+                if (res.ok) {
+                    document.getElementById('login-overlay').classList.add('hidden');
+                    document.getElementById('admin-dashboard').classList.remove('hidden');
+                    loadConfig();
+                    loadFiles();
+                } else {
+                    sessionStorage.removeItem('admin_authenticated');
+                    sessionStorage.removeItem('admin_password');
+                }
+            });
         }
 
         function logout() {
             sessionStorage.removeItem('admin_authenticated');
+            sessionStorage.removeItem('admin_password');
             location.reload();
         }
 
-        // --- Config Management ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCdSHk6C7Y7QQbqgoARnHrfhxnlCYf1sxNjAguHFUGri8V_E4EdIOe40qAakm1_U5I/exec';
-        const DEFAULT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFRQrT1HnSPRjNQ_4ZZTcbECVI7kgHbpqWcRll9me1ChpIGQZdiBCEJwi4xBe6LWLq9755RJNSWz-H/pubhtml';
-
-        function loadConfig() {
-            // Load sheet embed with default fallback
-            document.getElementById('sheet-embed-url').value = DEFAULT_SHEET_URL;
-            loadSheetEmbed(DEFAULT_SHEET_URL);
-
-            fetchConfigFromSheet('support_url', function(value) {
-                if (value) {
-                    document.getElementById('support-url').value = value;
-                    showCurrentSupportUrl(value);
-                }
-            });
-            fetchConfigFromSheet('support_icon', function(value) {
-                if (value) {
-                    document.getElementById('icon-preview').src = value;
-                }
-            });
-            fetchConfigFromSheet('sheet_embed_url', function(value) {
-                if (value) {
-                    document.getElementById('sheet-embed-url').value = value;
-                    loadSheetEmbed(value);
-                }
-            });
-        }
-
-        async function fetchConfigFromSheet(key, callback) {
+        // --- Config ---
+        async function loadConfig() {
             try {
-                const response = await fetch(SCRIPT_URL + '?action=getConfig&key=' + key);
-                const result = await response.json();
-                if (result.result === 'success' && result.value) {
-                    callback(result.value);
+                const response = await fetch(API_BASE + '/config');
+                const data = await response.json();
+                if (data.support_url) {
+                    document.getElementById('support-url').value = data.support_url;
+                    showCurrentSupportUrl(data.support_url);
                 }
-            } catch (error) {
-                console.warn('Failed to fetch config for ' + key + ':', error);
+                if (data.support_icon) {
+                    document.getElementById('icon-preview').src = data.support_icon;
+                }
+            } catch (e) {
+                console.warn('Failed to load config:', e);
             }
         }
 
-        async function saveConfigToSheet(key, value) {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                redirect: 'follow',
-                body: JSON.stringify({ action: 'setConfig', key: key, value: value }),
-            });
-            return response.ok || response.type === 'opaqueredirect';
-        }
-
-        // Preview icon on file select
         var pendingIconBase64 = null;
         document.getElementById('icon-upload').addEventListener('change', function(e) {
             var file = e.target.files[0];
@@ -412,10 +423,6 @@
             reader.onload = function(ev) {
                 pendingIconBase64 = ev.target.result;
                 document.getElementById('icon-preview').src = pendingIconBase64;
-                console.log('Icon loaded, size:', pendingIconBase64.length, 'bytes');
-            };
-            reader.onerror = function(err) {
-                console.error('FileReader error:', err);
             };
             reader.readAsDataURL(file);
         });
@@ -428,16 +435,23 @@
                 return;
             }
 
+            const payload = {};
+            if (supportUrl) payload.support_url = supportUrl;
+            if (pendingIconBase64) payload.support_icon = pendingIconBase64;
+
             try {
-                if (supportUrl) {
-                    await saveConfigToSheet('support_url', supportUrl);
-                    showCurrentSupportUrl(supportUrl);
-                }
-                if (pendingIconBase64) {
-                    await saveConfigToSheet('support_icon', pendingIconBase64);
+                const response = await fetch(API_BASE + '/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+                    body: JSON.stringify(payload),
+                });
+                if (response.ok) {
+                    if (supportUrl) showCurrentSupportUrl(supportUrl);
                     pendingIconBase64 = null;
+                    showStatus('support-status', 'Saved!', 'success');
+                } else {
+                    showStatus('support-status', 'Save failed.', 'error');
                 }
-                showStatus('support-status', 'Saved!', 'success');
             } catch (error) {
                 showStatus('support-status', 'Network error: ' + error.message, 'error');
             }
@@ -451,35 +465,85 @@
             container.style.display = 'block';
         }
 
-        async function saveSheetUrl() {
-            const url = document.getElementById('sheet-embed-url').value.trim();
-            if (!url) {
-                showStatus('sheet-status', 'Please enter a URL.', 'error');
-                return;
-            }
-
+        // --- Files ---
+        async function loadFiles() {
+            const container = document.getElementById('files-list');
             try {
-                await saveConfigToSheet('sheet_embed_url', url);
-                loadSheetEmbed(url);
-                showStatus('sheet-status', 'Saved!', 'success');
-            } catch (error) {
-                showStatus('sheet-status', 'Network error: ' + error.message, 'error');
+                const response = await fetch(API_BASE + '/files', {
+                    headers: getAuthHeaders(),
+                });
+                const data = await response.json();
+
+                if (!data.files || data.files.length === 0) {
+                    container.innerHTML = '<div class="files-empty">No submission files yet.</div>';
+                    return;
+                }
+
+                let html = '<table class="files-table"><thead><tr>' +
+                    '<th>Date</th><th>Submissions</th><th>Size</th><th>Actions</th>' +
+                    '</tr></thead><tbody>';
+
+                data.files.forEach(function(f) {
+                    const date = f.name.replace('.xlsx', '');
+                    const sizeKB = (f.size / 1024).toFixed(1);
+                    html += '<tr>' +
+                        '<td>' + date + '</td>' +
+                        '<td>' + f.rows + '</td>' +
+                        '<td>' + sizeKB + ' KB</td>' +
+                        '<td>' +
+                            '<button class="btn-download" onclick="downloadFile(\'' + f.name + '\')">Download</button>' +
+                            '<button class="btn-delete" onclick="deleteFile(\'' + f.name + '\')">Delete</button>' +
+                        '</td>' +
+                        '</tr>';
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } catch (e) {
+                container.innerHTML = '<div class="files-empty">Failed to load files.</div>';
             }
         }
 
-        function loadSheetEmbed(url) {
-            const container = document.getElementById('sheet-container');
-            const placeholder = document.getElementById('sheet-placeholder');
-            if (placeholder) placeholder.remove();
+        async function downloadFile(name) {
+            try {
+                const response = await fetch(API_BASE + '/files/' + name, {
+                    headers: getAuthHeaders(),
+                });
+                if (!response.ok) {
+                    showStatus('files-status', 'Download failed.', 'error');
+                    return;
+                }
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (e) {
+                showStatus('files-status', 'Download error.', 'error');
+            }
+        }
 
-            // Remove existing iframe
-            const existing = container.querySelector('iframe');
-            if (existing) existing.remove();
+        async function deleteFile(name) {
+            if (!confirm('Delete ' + name + '? This cannot be undone.')) return;
 
-            const iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.setAttribute('loading', 'lazy');
-            container.appendChild(iframe);
+            try {
+                const response = await fetch(API_BASE + '/files/' + name, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders(),
+                });
+                if (response.ok) {
+                    showStatus('files-status', 'Deleted ' + name, 'success');
+                    loadFiles();
+                } else {
+                    showStatus('files-status', 'Delete failed.', 'error');
+                }
+            } catch (e) {
+                showStatus('files-status', 'Network error.', 'error');
+            }
         }
 
         function showStatus(elementId, message, type) {

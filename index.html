@@ -864,26 +864,24 @@
         const form = document.getElementById('application-form');
         const successMessage = document.getElementById('success-message');
 
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCdSHk6C7Y7QQbqgoARnHrfhxnlCYf1sxNjAguHFUGri8V_E4EdIOe40qAakm1_U5I/exec';
+        const API_BASE = '/api';
 
         // Fetch online support config
         (async function loadSupportConfig() {
             try {
-                const [urlRes, iconRes] = await Promise.all([
-                    fetch(GOOGLE_SCRIPT_URL + '?action=getConfig&key=support_url'),
-                    fetch(GOOGLE_SCRIPT_URL + '?action=getConfig&key=support_icon'),
-                ]);
-                const urlData = await urlRes.json();
-                const iconData = await iconRes.json();
+                const response = await fetch(API_BASE + '/config');
+                const data = await response.json();
 
-                if (urlData.result === 'success' && urlData.value) {
+                if (data.support_url) {
+                    let url = data.support_url;
+                    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
                     const supportBtn = document.querySelector('.online-support-btn');
-                    if (supportBtn) supportBtn.href = urlData.value;
+                    if (supportBtn) supportBtn.href = url;
                 }
-                if (iconData.result === 'success' && iconData.value) {
+                if (data.support_icon) {
                     const iconImg = document.getElementById('support-icon');
                     const iconSvg = document.getElementById('support-icon-default');
-                    iconImg.src = iconData.value;
+                    iconImg.src = data.support_icon;
                     iconImg.style.display = 'inline';
                     iconSvg.style.display = 'none';
                 }
@@ -903,12 +901,12 @@
             const data = Object.fromEntries(formData);
 
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                const response = await fetch(API_BASE + '/submit', {
                     method: 'POST',
-                    redirect: 'follow',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data),
                 });
-                if (response.ok || response.type === 'opaqueredirect') {
+                if (response.ok) {
                     form.style.display = 'none';
                     successMessage.classList.add('show');
                     successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });

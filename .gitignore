@@ -1,0 +1,22 @@
+# Deployment docs with credentials / legacy setup docs
+DEPLOYMENT.md
+SOP.md
+
+# Runtime data (submissions, config)
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Claude / editor local settings
+.claude/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
