@@ -3,787 +3,821 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Part-Time Data Annotation Jobs</title>
+    <title>Part-Time YouTube Tasks - Work From Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Serif:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --red: #FF0000;
+            --red-dark: #CC0000;
+            --black: #0F0F0F;
+            --dark: #212121;
+            --text: #0F0F0F;
+            --muted: #5F6368;
+            --light: #80868B;
+            --bg-soft: #F8F9FA;
+            --border: #DADCE0;
+            --max: 1200px;
         }
 
+        html { scroll-behavior: smooth; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: #fff;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
-        nav {
+        img { display: block; max-width: 100%; }
+        a { color: inherit; }
+
+        /* ── NAV ── */
+        .nav {
             position: fixed;
             top: 0;
-            width: 100%;
+            left: 0;
+            right: 0;
             background: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            z-index: 100;
+            height: 64px;
         }
-
-        nav ul {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #0f766e;
-        }
-
-        section {
-            min-height: 100vh;
-            padding: 6rem 2rem 4rem;
-        }
-
-        .container {
-            max-width: 1200px;
+        .nav-wrap {
+            max-width: var(--max);
+            height: 100%;
             margin: 0 auto;
-        }
-
-        /* Intro Section */
-        #intro {
-            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
-            color: #fff;
+            padding: 0 2rem;
             display: flex;
             align-items: center;
-            position: relative;
-            overflow: hidden;
+            justify-content: space-between;
         }
-
-        .hero-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+        .logo {
+            display: flex;
             align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text);
+        }
+        .logo-mark {
+            width: 28px;
+            height: 20px;
+            background: var(--red);
+            border-radius: 5px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .logo-mark::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-40%, -50%);
+            border-style: solid;
+            border-width: 5px 0 5px 8px;
+            border-color: transparent transparent transparent #fff;
+        }
+        .logo-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .logo-jobs {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: var(--muted);
+            margin-left: 0.1rem;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .nav-links a:hover { color: var(--red); }
+        .nav-cta {
+            background: var(--red);
+            color: #fff !important;
+            padding: 0.5rem 1.25rem;
+            border-radius: 2px;
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--red-dark); color: #fff !important; }
+
+        /* ── HERO ── */
+        .hero {
+            margin-top: 64px;
+            position: relative;
+            height: 64vh;
+            min-height: 440px;
+            max-height: 620px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .hero-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 35%;
+        }
+        .hero-cut {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            clip-path: polygon(0 0, 42% 0, 0 70%);
+            z-index: 1;
+        }
+        .hero-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            padding: 3rem 2.5rem;
+            color: var(--text);
+        }
+        .hero-eyebrow {
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.875rem;
+            font-weight: 500;
+        }
+        .hero h1 {
+            font-size: clamp(1.875rem, 3vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            max-width: 360px;
+            margin-bottom: 1.5rem;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--red);
+            color: #fff;
+            padding: 0.75rem 1.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+            width: fit-content;
+        }
+        .hero-cta:hover { background: var(--red-dark); }
+
+        /* ── SECTION ── */
+        section { padding: 6rem 2rem; }
+        .container { max-width: var(--max); margin: 0 auto; }
+
+        .section-title {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+            margin-bottom: 1rem;
+            max-width: 720px;
+        }
+        .section-lead {
+            font-size: 1.0625rem;
+            color: var(--muted);
+            line-height: 1.65;
+            max-width: 620px;
         }
 
-        .hero-content {
+        /* ── IMPACT STATS ── */
+        .impact .container { text-align: center; }
+        .impact .section-title { margin: 0 auto 1rem; }
+        .impact .section-lead { margin: 0 auto; }
+        .impact-grid {
+            margin-top: 4.5rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
             text-align: left;
         }
-
-        .hero-image {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        #intro h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-
-        #intro .subtitle {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: #fff;
-            color: #0f766e;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            text-decoration: none;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .feature-card {
-            background: rgba(255,255,255,0.1);
-            padding: 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s, background 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.15);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-icon svg {
-            width: 30px;
-            height: 30px;
-            stroke: #fff;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-card p {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-
-        /* Stories Section */
-        #cases {
-            background: #f8fafc;
-        }
-
-        #cases h2 {
-            text-align: center;
+        .impact-item .impact-num {
+            display: block;
             font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.05;
             margin-bottom: 1rem;
-            color: #1e293b;
+            letter-spacing: -0.02em;
+        }
+        .impact-item .impact-num em {
+            color: var(--red);
+            font-style: normal;
+        }
+        .impact-item p {
+            font-size: 0.9375rem;
+            color: var(--muted);
+            line-height: 1.6;
         }
 
-        #cases .section-desc {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        /* ── GALLERY ── */
+        .gallery { padding: 0 0 6rem; background: #fff; }
+        .gallery-head {
+            max-width: var(--max);
+            margin: 0 auto 2.5rem;
+            padding: 0 2rem;
         }
+        .gallery-head .section-title { margin-bottom: 1rem; }
+        .gallery-head .section-lead { max-width: 620px; }
 
-        .section-illustration {
-            text-align: center;
-            margin-bottom: 3rem;
+        .gallery-frame {
+            position: relative;
         }
-
-        .section-illustration img {
-            max-width: 400px;
-            width: 100%;
-            height: auto;
+        .gallery-strip {
+            display: flex;
+            gap: 4px;
+            padding: 0 2rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-padding-left: 2rem;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
-
-        .cases-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .case-card {
-            background: #fff;
-            border-radius: 16px;
+        .gallery-strip::-webkit-scrollbar { display: none; }
+        .gallery-tile {
+            position: relative;
+            flex: 0 0 calc((100vw - 4rem - 12px) / 4);
+            max-width: calc((1200px - 12px) / 4);
+            aspect-ratio: 4/5;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--bg-soft);
+            scroll-snap-align: start;
         }
-
-        .case-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        .gallery-tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
         }
+        .gallery-tile:hover img { transform: scale(1.04); }
 
-        .case-header {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+        .gallery-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 1.15rem;
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: border-color 0.15s, background 0.15s, color 0.15s, opacity 0.15s;
+        }
+        .gallery-btn-prev { left: 1.25rem; }
+        .gallery-btn-next { right: 1.25rem; }
+        .gallery-btn:hover:not(:disabled) {
+            border-color: var(--text);
+            background: var(--text);
             color: #fff;
+        }
+        .gallery-btn:disabled { opacity: 0; pointer-events: none; }
+
+        .gallery-controls {
+            margin: 2rem auto 0;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        .gallery-progress {
+            width: 220px;
+            height: 2px;
+            background: var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .gallery-progress-thumb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 25%;
+            background: var(--text);
+            transition: width 0.25s ease, transform 0.25s ease;
+            will-change: transform, width;
+        }
+
+        /* ── FEATURED QUOTE ── */
+        .featured {
+            background: var(--bg-soft);
+            padding: 7rem 2rem;
+        }
+        .featured-inner {
+            max-width: 880px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .featured-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--red);
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+        .featured blockquote {
+            font-family: 'Roboto Serif', Georgia, serif;
+            font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+            font-weight: 400;
+            line-height: 1.4;
+            color: var(--text);
+            margin-bottom: 2.5rem;
+            letter-spacing: -0.005em;
+        }
+        .featured cite {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: center;
+            gap: 0.875rem;
+            font-style: normal;
         }
-
-        .case-avatar {
-            width: 60px;
-            height: 60px;
+        .featured cite img {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(255,255,255,0.3);
         }
-
-        .case-header-info h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.25rem;
+        .featured cite .who {
+            text-align: left;
         }
-
-        .case-tag {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .case-body {
-            padding: 1.5rem;
-        }
-
-        .case-body p {
-            color: #64748b;
-            margin-bottom: 1rem;
-            font-style: italic;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-
-        .case-body p::before {
-            content: '"';
-            position: absolute;
-            left: 0;
-            top: -5px;
-            font-size: 2rem;
-            color: #0f766e;
-            opacity: 0.3;
-        }
-
-        .case-details {
-            display: flex;
-            justify-content: space-around;
-            padding-top: 1rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .case-detail {
-            text-align: center;
-        }
-
-        .case-detail span {
+        .featured cite .who strong {
             display: block;
-            font-size: 0.75rem;
-            color: #94a3b8;
+            font-size: 0.9375rem;
+            font-weight: 500;
+        }
+        .featured cite .who span {
+            font-size: 0.8125rem;
+            color: var(--muted);
+        }
+
+        /* ── TEAMS / WHAT YOU'LL DO ── */
+        .teams .section-title,
+        .teams .section-lead { margin-bottom: 1rem; }
+        .teams .section-lead { margin-bottom: 4rem; }
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+        .team-card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .team-card:hover { transform: translateY(-4px); }
+        .team-card-img {
+            width: 100%;
+            aspect-ratio: 16/10;
+            object-fit: cover;
+            background: var(--bg-soft);
+        }
+        .team-card-body { padding: 1.5rem 0 0; }
+        .team-card-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
+            color: var(--red);
+            font-weight: 600;
+            margin-bottom: 0.625rem;
         }
-
-        .case-detail strong {
-            color: #0f766e;
-            font-size: 1.1rem;
+        .team-card h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            margin-bottom: 0.625rem;
         }
-
-        /* Application Section */
-        #apply {
-            background: #fff;
-        }
-
-        #apply h2 {
-            text-align: center;
-            font-size: 2.5rem;
+        .team-card p {
+            font-size: 0.9375rem;
+            color: var(--muted);
+            line-height: 1.6;
             margin-bottom: 1rem;
-            color: #1e293b;
         }
-
-        #apply .section-desc {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        .team-card .arrow {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            transition: gap 0.2s, color 0.2s;
         }
+        .team-card:hover .arrow { gap: 0.625rem; color: var(--red); }
 
-        .apply-layout {
+        /* ── JOIN ── */
+        .join {
+            background: var(--bg-soft);
+        }
+        .join-wrap {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            gap: 5rem;
             align-items: start;
         }
-
-        .apply-illustration {
-            position: sticky;
-            top: 100px;
+        .join-info { padding-top: 0.5rem; }
+        .join-info .section-title { margin-bottom: 1.5rem; }
+        .join-info .section-lead { margin-bottom: 2rem; }
+        .join-info ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
-
-        .apply-illustration img {
-            width: 100%;
-            max-width: 500px;
-            height: auto;
-            border-radius: 20px;
+        .join-info li {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9375rem;
+            color: var(--text);
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
         }
-
-        .form-container {
-            background: #f8fafc;
-            padding: 3rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        .join-info li:last-child { border: none; }
+        .join-info li .step {
+            color: var(--red);
+            font-weight: 500;
+            min-width: 1.5rem;
         }
-
-        .form-group {
-            margin-bottom: 1.5rem;
+        .form-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
-
+        .form-card h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1.75rem;
+        }
+        .form-group { margin-bottom: 1.25rem; }
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.375rem;
+            font-size: 0.8125rem;
             font-weight: 500;
-            color: #374151;
+            color: var(--text);
         }
-
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            padding: 0.75rem 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            font-size: 0.9375rem;
             font-family: inherit;
+            color: var(--text);
+            background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            appearance: none;
         }
-
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #0f766e;
-            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(255,0,0,0.08);
         }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
+        .form-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235F6368' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.875rem center;
+            padding-right: 2.25rem;
         }
-
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            background: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 2px solid #e2e8f0;
-            transition: border-color 0.3s, background 0.3s;
-        }
-
-        .checkbox-label:hover {
-            border-color: #0f766e;
-        }
-
-        .checkbox-label input {
-            width: auto;
-        }
-
-        .checkbox-label input:checked + span {
-            color: #0f766e;
-            font-weight: 500;
-        }
-
         .submit-btn {
             width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+            padding: 0.9375rem;
+            background: var(--red);
             color: #fff;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: 2px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+            transition: background 0.15s;
+            margin-top: 0.5rem;
         }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(15, 118, 110, 0.4);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        .submit-btn:hover:not(:disabled) { background: var(--red-dark); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .online-support-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 0.5rem;
             width: 100%;
-            padding: 1rem;
-            margin-top: 0.75rem;
-            background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            padding: 0.875rem;
+            margin-top: 0.625rem;
+            background: #fff;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
             text-decoration: none;
-            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+            transition: border-color 0.15s, color 0.15s;
         }
+        .online-support-btn:hover { border-color: var(--text); }
+        .success-message { display: none; text-align: center; padding: 3rem 1.5rem; }
+        .success-message.show { display: block; }
+        .success-message h3 { font-size: 1.25rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text); }
+        .success-message p { color: var(--muted); font-size: 0.9375rem; }
 
-        .online-support-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(24, 144, 255, 0.4);
-        }
-
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        .success-message h3 {
-            color: #059669;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Footer */
+        /* ── FOOTER ── */
         footer {
-            background: #1e293b;
-            color: #94a3b8;
-            text-align: center;
-            padding: 2rem;
+            background: #fff;
+            border-top: 1px solid var(--border);
+        }
+        .footer-main {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 4rem 2rem 2.5rem;
+        }
+        .footer-cols {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+        .footer-brand { margin-bottom: 1rem; }
+        .footer-brand .logo { margin-bottom: 1rem; }
+        .footer-tagline {
+            font-size: 0.875rem;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 320px;
+        }
+        .footer-col h4 {
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+        }
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+        .footer-col a {
+            text-decoration: none;
+            font-size: 0.875rem;
+            color: var(--muted);
+            transition: color 0.15s;
+        }
+        .footer-col a:hover { color: var(--red); }
+        .footer-bottom {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8125rem;
+            color: var(--light);
         }
 
-        /* Responsive */
-        @media (max-width: 968px) {
-            .hero-layout {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .hero-content {
-                text-align: center;
-            }
-
-            .hero-image {
-                order: -1;
-            }
-
-            .hero-image img {
-                max-width: 400px;
-            }
-
-            .apply-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .apply-illustration {
-                display: none;
-            }
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .impact-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem 2rem; }
+            .gallery-tile { flex: 0 0 calc((100vw - 4rem - 8px) / 3); }
+            .footer-cols { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
         }
-
         @media (max-width: 768px) {
-            #intro h1 {
-                font-size: 2rem;
+            section { padding: 4rem 1.25rem; }
+            .nav-links { gap: 0.75rem; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            .hero { height: 56vh; min-height: 380px; }
+            .hero-cut { clip-path: polygon(0 0, 80% 0, 0 60%); }
+            .hero-content { padding: 2rem 1.25rem; }
+            .hero h1 { font-size: 1.5rem; max-width: 240px; }
+            .impact-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .gallery-head {
+                padding: 0 1.25rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.25rem;
             }
-
-            #intro .subtitle {
-                font-size: 1.1rem;
-            }
-
-            nav ul {
-                gap: 1.5rem;
-            }
-
-            .cases-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-container {
-                padding: 1.5rem;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-            }
+            .gallery-strip { padding: 0 1.25rem; scroll-padding-left: 1.25rem; }
+            .gallery-tile { flex: 0 0 calc((100vw - 2.5rem) / 1.4); }
+            .featured { padding: 5rem 1.25rem; }
+            .teams-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .join-wrap { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-cols { grid-template-columns: 1fr 1fr; gap: 2rem; }
+            .footer-main { padding: 3rem 1.25rem 1.5rem; }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="#intro">Home</a></li>
-            <li><a href="#cases">Stories</a></li>
-            <li><a href="#apply">Apply Now</a></li>
-        </ul>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-wrap">
+            <a href="#" class="logo">
+                <span class="logo-mark"></span>
+                <span class="logo-text">YouTube</span>
+                <span class="logo-jobs">Jobs</span>
+            </a>
+            <div class="nav-links">
+                <a href="#impact">About</a>
+                <a href="#teams">What You'll Do</a>
+                <a href="#join">Stories</a>
+                <a href="#join" class="nav-cta">Apply Now</a>
+            </div>
+        </div>
     </nav>
 
-    <!-- Intro Section -->
-    <section id="intro">
-        <div class="container">
-            <div class="hero-layout">
-                <div class="hero-content">
-                    <h1>Work From Home Positions</h1>
-                    <p class="subtitle">Remote, flexible hours, real pay. Help train machine learning models on your own schedule. No experience required - we'll teach you everything you need to know.</p>
-                    <a href="#apply" class="cta-button">Start Your Application</a>
-                </div>
-                <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop" alt="People working remotely on laptops">
-                </div>
-            </div>
+    <!-- HERO -->
+    <section class="hero" id="intro" style="padding:0;">
+        <img class="hero-img" src="https://lh3.googleusercontent.com/4sVbqCWWfM6BLzST4QkbRpQkqbg9HEU6r_PiC1Gz1b1dwWGrDsGbHzQct4P4Yu8KPeT7fgtXO-xJ4-B1Id5P7Xrk_YfjHTpvzvMB9Q=w1920" alt="">
+        <div class="hero-cut"></div>
+        <div class="hero-content">
+            <p class="hero-eyebrow">Work with YouTube</p>
+            <h1>Help brands and creators grow on YouTube.</h1>
+            <a href="#join" class="hero-cta">View openings &rarr;</a>
+        </div>
+    </section>
 
-            <div class="features">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                    </div>
-                    <h3>Flexible Hours</h3>
-                    <p>Work whenever suits you best. No fixed schedules, no commute. Good for students, parents, or anyone wanting more control over their time.</p>
+    <!-- IMPACT STATS -->
+    <section class="impact" id="impact">
+        <div class="container">
+            <h2 class="section-title">Help us grow brands and creators all over the world</h2>
+            <p class="section-lead">Our part-time team supports the campaigns, channels, and creators that keep YouTube an open, connected platform — work shared by people who simply love the platform.</p>
+            <div class="impact-grid">
+                <div class="impact-item">
+                    <span class="impact-num"><em>2.7B</em></span>
+                    <p>monthly active users worldwide make YouTube the second largest search engine on the internet.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
-                    </div>
-                    <h3>Work From Anywhere</h3>
-                    <p>Work from home, a library, or wherever you have internet. All you need is a computer and attention to detail.</p>
+                <div class="impact-item">
+                    <span class="impact-num"><em>$15–30</em></span>
+                    <p>per hour, paid out daily based on the kind of campaign work you take on.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <line x1="12" y1="1" x2="12" y2="23"></line>
-                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-                    </div>
-                    <h3>Fair Pay</h3>
-                    <p>Earn $15-35/hour depending on task type and your experience level. Daily payments via Cash App or bank transfer.</p>
+                <div class="impact-item">
+                    <span class="impact-num"><em>100%</em></span>
+                    <p>remote — set your own hours, no minimums, work from wherever you have a laptop.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                        </svg>
-                    </div>
-                    <h3>Learn As You Go</h3>
-                    <p>Pick up practical knowledge about how machine learning systems are built while getting paid for your work.</p>
+                <div class="impact-item">
+                    <span class="impact-num"><em>0 yrs</em></span>
+                    <p>experience required. We train every new team member through a short paid onboarding.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stories Section -->
-    <section id="cases">
-        <div class="container">
-            <h2>People Like You</h2>
-            <p class="section-desc">Hear from some of our annotators about how this work fits into their lives.</p>
-
-            <div class="section-illustration">
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=400&fit=crop" alt="Diverse team working together">
+    <!-- GALLERY -->
+    <section class="gallery">
+        <div class="gallery-head">
+            <h2 class="section-title">Give the world a voice</h2>
+            <p class="section-lead">Our team supports the brands, channels, and creators that make YouTube what it is. From ad campaigns to outreach, this is the work behind the screens.</p>
+        </div>
+        <div class="gallery-frame">
+        <button class="gallery-btn gallery-btn-prev" id="gallery-prev" aria-label="Previous">&larr;</button>
+        <button class="gallery-btn gallery-btn-next" id="gallery-next" aria-label="Next">&rarr;</button>
+        <div class="gallery-strip" id="gallery-strip">
+            <div class="gallery-tile">
+                <img src="https://lh3.googleusercontent.com/iw6-C9PhpIvRxleuwWl9wpgsE1HAuUsQfsE2oOlwXdD3--e8nXwUx03j7ZMUTvtyuoeRyABdqAvxmyosg_9iuWwbjl0HmerhGwEyt68=w800" alt="Creators performing">
             </div>
-
-            <div class="cases-grid">
-                <div class="case-card">
-                    <div class="case-header">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=face" alt="Maria" class="case-avatar">
-                        <div class="case-header-info">
-                            <h3>Maria T.</h3>
-                            <span class="case-tag">Graduate Student</span>
-                        </div>
-                    </div>
-                    <div class="case-body">
-                        <p>I'm finishing my PhD in linguistics and needed something flexible that wouldn't interfere with my research schedule. I do text annotation tasks between writing sessions. Some weeks I work 5 hours, some weeks 20. The pay helps cover rent and I've actually learned a lot about how NLP models work.</p>
-                        <div class="case-details">
-                            <div class="case-detail">
-                                <span>With us</span>
-                                <strong>14 months</strong>
-                            </div>
-                            <div class="case-detail">
-                                <span>Hours/week</span>
-                                <strong>10-15</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-card">
-                    <div class="case-header">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face" alt="James" class="case-avatar">
-                        <div class="case-header-info">
-                            <h3>James K.</h3>
-                            <span class="case-tag">Stay-at-home Dad</span>
-                        </div>
-                    </div>
-                    <div class="case-body">
-                        <p>After my second kid was born, my wife and I decided I'd stay home. This lets me bring in extra income during nap times and after bedtime. I mostly do image labeling tasks. It's not glamorous but it's honest work and I can stop whenever I need to.</p>
-                        <div class="case-details">
-                            <div class="case-detail">
-                                <span>With us</span>
-                                <strong>8 months</strong>
-                            </div>
-                            <div class="case-detail">
-                                <span>Hours/week</span>
-                                <strong>12-18</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-card">
-                    <div class="case-header">
-                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=120&h=120&fit=crop&crop=face" alt="Priya" class="case-avatar">
-                        <div class="case-header-info">
-                            <h3>Priya S.</h3>
-                            <span class="case-tag">Software Developer</span>
-                        </div>
-                    </div>
-                    <div class="case-body">
-                        <p>I have a full-time job but wanted to make extra money on the side. I do code review tasks on weekends. It's interesting to see how AI coding assistants are being trained. The pay is good for the time spent, and it keeps my skills sharp.</p>
-                        <div class="case-details">
-                            <div class="case-detail">
-                                <span>With us</span>
-                                <strong>6 months</strong>
-                            </div>
-                            <div class="case-detail">
-                                <span>Hours/week</span>
-                                <strong>5-8</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-card">
-                    <div class="case-header">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face" alt="David" class="case-avatar">
-                        <div class="case-header-info">
-                            <h3>David R.</h3>
-                            <span class="case-tag">Retired Teacher</span>
-                        </div>
-                    </div>
-                    <div class="case-body">
-                        <p>I taught high school English for 32 years. Now I evaluate AI writing and rate chatbot responses. It's mentally engaging, I set my own pace, and it supplements my pension. I appreciate that the work actually matters for making these systems better.</p>
-                        <div class="case-details">
-                            <div class="case-detail">
-                                <span>With us</span>
-                                <strong>11 months</strong>
-                            </div>
-                            <div class="case-detail">
-                                <span>Hours/week</span>
-                                <strong>20-25</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-card">
-                    <div class="case-header">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face" alt="Sarah" class="case-avatar">
-                        <div class="case-header-info">
-                            <h3>Sarah M.</h3>
-                            <span class="case-tag">Freelance Writer</span>
-                        </div>
-                    </div>
-                    <div class="case-body">
-                        <p>Freelance writing income is unpredictable. This fills in the gaps. When I'm waiting on client feedback or between projects, I do annotation work. It's not going to make anyone rich, but it's reliable and I can do it in my pajamas.</p>
-                        <div class="case-details">
-                            <div class="case-detail">
-                                <span>With us</span>
-                                <strong>9 months</strong>
-                            </div>
-                            <div class="case-detail">
-                                <span>Hours/week</span>
-                                <strong>8-15</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-card">
-                    <div class="case-header">
-                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&h=120&fit=crop&crop=face" alt="Chen" class="case-avatar">
-                        <div class="case-header-info">
-                            <h3>Chen W.</h3>
-                            <span class="case-tag">College Student</span>
-                        </div>
-                    </div>
-                    <div class="case-body">
-                        <p>I'm studying computer science and this beats working food service. I can work between classes or late at night. The tasks are straightforward once you get the hang of it. I've done about 15,000 image labels so far and it's helped me understand ML datasets better.</p>
-                        <div class="case-details">
-                            <div class="case-detail">
-                                <span>With us</span>
-                                <strong>7 months</strong>
-                            </div>
-                            <div class="case-detail">
-                                <span>Hours/week</span>
-                                <strong>10-20</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="gallery-tile">
+                <img src="https://lh3.googleusercontent.com/rP_vpFVgsytmbT1jzRe-tQqU6Pkv3lfENMyRfg_gaVbO8ks2aai1V9XeO9kdmY-G4PnFYCdw4W3oU4jaqNh8K6DI6plqrC6mlugfkNU=w800" alt="Team brainstorming">
+            </div>
+            <div class="gallery-tile">
+                <img src="https://lh3.googleusercontent.com/HVuWZ1cdWKYPi7vbM6B4JwSkZXu6LtGr7TqFupRM6drcnbmdVdHC-RX-uXHwFCDf8_6VpGez6rAXK67XlMRGg8k6Vu4qPo8w3OKuGD4=w800" alt="Team meeting">
+            </div>
+            <div class="gallery-tile">
+                <img src="https://lh3.googleusercontent.com/p-yovbdoIOGqDMluCx-dmEbhtQJOP7rsnQWBBDfuISwm1aN1z3zw2ucpL_qSbiTB39pYk0cfMn9q3ZUttVSo66vxqH4c6JGeRVbPWiE=w800" alt="Creative workspace">
+            </div>
+            <div class="gallery-tile">
+                <img src="https://lh3.googleusercontent.com/4hm23VKkzq7WDwzKc15i7XYNcQ7UfKZujtJdIyNlZAaO2wAZe_LFPLuZswfvGtlK5uKvBP1Hl3Z_oUutO0rWcd7NY-AQ6oTda-fnfA=w800" alt="Working remotely">
+            </div>
+        </div>
+        </div>
+        <div class="gallery-controls">
+            <div class="gallery-progress">
+                <div class="gallery-progress-thumb" id="gallery-progress-thumb"></div>
             </div>
         </div>
     </section>
 
-    <!-- Application Section -->
-    <section id="apply">
-        <div class="container">
-            <h2>Start Your Application</h2>
-            <p class="section-desc">Fill out the form below to join our annotation team. We review applications within 48 hours.</p>
+    <!-- FEATURED QUOTE -->
+    <section class="featured">
+        <div class="featured-inner">
+            <p class="featured-eyebrow">Set the stage</p>
+            <blockquote>&ldquo;It just really humbles you working on a product that reaches so many people. I do influencer outreach for a few brands — finding the right creators, drafting that first email — and you remember every message lands with someone real.&rdquo;</blockquote>
+            <cite>
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=face" alt="">
+                <span class="who">
+                    <strong>Maria T.</strong>
+                    <span>Influencer Outreach, 14 months</span>
+                </span>
+            </cite>
+        </div>
+    </section>
 
-            <div class="apply-layout">
-                <div class="apply-illustration">
-                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&h=600&fit=crop" alt="Person working on laptop at home">
+    <!-- TEAMS / WHAT YOU'LL DO -->
+    <section class="teams" id="teams">
+        <div class="container">
+            <h2 class="section-title">Find your team</h2>
+            <p class="section-lead">Pick the kind of marketing work that fits you. Most people start in one area and move between teams as they grow.</p>
+            <div class="teams-grid">
+
+                <a href="#join" class="team-card">
+                    <img class="team-card-img" src="https://lh3.googleusercontent.com/eEO2rCnrW8gukpSyaEgiA474wkthJ3TQqAztzUqItekT4DctpfSDz7FToNH8OR1gBE4cU56i-Fai0fegRzMuUwK3PpwZnmj5syqQ=s0" alt="Ad Campaign Support">
+                    <div class="team-card-body">
+                        <p class="team-card-eyebrow">Team 01</p>
+                        <h3>Ad Campaign Support</h3>
+                        <p>Help brands launch and optimize YouTube ad campaigns. Monitor performance, adjust targeting, and keep clients updated with weekly reports.</p>
+                        <span class="arrow">View role &rarr;</span>
+                    </div>
+                </a>
+
+                <a href="#join" class="team-card">
+                    <img class="team-card-img" src="https://lh3.googleusercontent.com/qGW0qbG1JC7BczS2XOY8cz1c7-LVB-VLQJGkqCReUCBAe3V9_NyH2wRz4FMDWQwukSmQvzVKEAsl27_uov2Ls1fQykYLiTINMMMSyQ=s0" alt="Channel Promotion">
+                    <div class="team-card-body">
+                        <p class="team-card-eyebrow">Team 02</p>
+                        <h3>Channel Promotion</h3>
+                        <p>Drive subscriber growth and engagement for emerging YouTube creators. Organize promotion campaigns and track audience metrics.</p>
+                        <span class="arrow">View role &rarr;</span>
+                    </div>
+                </a>
+
+                <a href="#join" class="team-card">
+                    <img class="team-card-img" src="https://lh3.googleusercontent.com/QjfWQnYYH98xtgaX8HIKtaTtcu2Z3_xMc2wTk6hpVnkfoitPwbLObJMWlrqA9tWlfJi8CGT2CW_y-7vesbTevK876rRQr8MfhKJa=s0" alt="Influencer Outreach">
+                    <div class="team-card-body">
+                        <p class="team-card-eyebrow">Team 03</p>
+                        <h3>Influencer Outreach</h3>
+                        <p>Match brands with the right YouTube creators for sponsored content. Research channels, draft outreach, and track responses.</p>
+                        <span class="arrow">View role &rarr;</span>
+                    </div>
+                </a>
+
+                <a href="#join" class="team-card">
+                    <img class="team-card-img" src="https://lh3.googleusercontent.com/U-ngF5lpMERD284mPXDOSoU2BeIY3RXEmWVxpwa49S7XokWFCM7fT1LAz-GQLFc6p1f8vbPyHGMJsmfiEfqJjls5N0N5Rwuzp_hf=s0" alt="Performance Analytics">
+                    <div class="team-card-body">
+                        <p class="team-card-eyebrow">Team 04</p>
+                        <h3>Performance Analytics</h3>
+                        <p>Pull campaign data from YouTube Studio, compile clear client reports, and surface insights that improve results.</p>
+                        <span class="arrow">View role &rarr;</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- JOIN OUR TEAM -->
+    <section class="join" id="join">
+        <div class="container">
+            <div class="join-wrap">
+                <div class="join-info">
+                    <h2 class="section-title">Join our team</h2>
+                    <p class="section-lead">We hire across all time zones. Most team members start with a few hours a week and scale up as they get comfortable. We review applications within 48 hours.</p>
+                    <ul>
+                        <li><span class="step">01</span><span>Submit the application form on this page</span></li>
+                        <li><span class="step">02</span><span>Hear back from us within 48 hours</span></li>
+                        <li><span class="step">03</span><span>Complete a short paid onboarding walkthrough</span></li>
+                        <li><span class="step">04</span><span>Start your first task and earn from day one</span></li>
+                    </ul>
                 </div>
 
-                <div class="form-container">
+                <div class="form-card">
+                    <h3>Apply for a role</h3>
                     <form id="application-form">
                         <div class="form-group">
                             <label for="fullName">Full Name *</label>
-                            <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                            <input type="text" id="fullName" name="fullName" required placeholder="Your full name">
                         </div>
-
                         <div class="form-group">
                             <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                            <input type="tel" id="phone" name="phone" required placeholder="Your phone number">
                         </div>
-
                         <div class="form-group">
                             <label for="age">Age *</label>
-                            <input type="number" id="age" name="age" required min="1" max="99" placeholder="Enter your age">
+                            <input type="number" id="age" name="age" required min="1" max="99" placeholder="Your age">
                         </div>
-
                         <div class="form-group">
                             <label for="country">Country *</label>
                             <select id="country" name="country" required>
@@ -800,19 +834,16 @@
                                 <option value="OTHER">Other</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="availability">Weekly Availability *</label>
                             <select id="availability" name="availability" required>
-                                <option value="">Select hours per week</option>
-                                <option value="5-10">5-10 hours</option>
-                                <option value="10-20">10-20 hours</option>
-                                <option value="20-30">20-30 hours</option>
+                                <option value="">Hours per week</option>
+                                <option value="5-10">5–10 hours</option>
+                                <option value="10-20">10–20 hours</option>
+                                <option value="20-30">20–30 hours</option>
                                 <option value="30+">30+ hours</option>
                             </select>
                         </div>
-
-
                         <div class="form-group">
                             <label for="languages">Languages Spoken</label>
                             <input type="text" id="languages" name="languages" placeholder="e.g., English (native), Spanish (fluent)">
@@ -826,14 +857,13 @@
 
                         <button type="submit" class="submit-btn">Submit Application</button>
                         <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="online-support-btn">
-                            <img id="support-icon" src="" alt="" style="width: 20px; height: 20px; display: none;">
-                            <svg id="support-icon-default" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <img id="support-icon" src="" alt="" style="width: 18px; height: 18px; display: none;">
+                            <svg id="support-icon-default" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                             </svg>
                             Online Support
                         </a>
                     </form>
-
                     <div class="success-message" id="success-message">
                         <h3>Application Submitted</h3>
                         <p>Thank you for your interest. We'll review your application and get back to you within 48 hours.</p>
@@ -843,35 +873,101 @@
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 Part-Time Hiring. All rights reserved.</p>
+        <div class="footer-main">
+            <div class="footer-cols">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-mark"></span>
+                        <span class="logo-text">YouTube</span>
+                        <span class="logo-jobs">Jobs</span>
+                    </a>
+                    <p class="footer-tagline">Help brands and creators grow on one of the world's largest platforms. Flexible marketing work, fully remote, paid daily.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Teams</h4>
+                    <ul>
+                        <li><a href="#teams">Ad Campaign Support</a></li>
+                        <li><a href="#teams">Channel Promotion</a></li>
+                        <li><a href="#teams">Influencer Outreach</a></li>
+                        <li><a href="#teams">Performance Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="#impact">Our work</a></li>
+                        <li><a href="#join">How we hire</a></li>
+                        <li><a href="#join">Apply now</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#join">Online support</a></li>
+                        <li><a href="#intro">FAQ</a></li>
+                        <li><a href="#intro">Privacy policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 YouTube Part-Time Hiring. All rights reserved.
+        </div>
     </footer>
 
     <script>
-        // Smooth scrolling for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
-        // Form submission handling
+        // Gallery horizontal scroll
+        (function () {
+            const strip = document.getElementById('gallery-strip');
+            const prev = document.getElementById('gallery-prev');
+            const next = document.getElementById('gallery-next');
+            const thumb = document.getElementById('gallery-progress-thumb');
+            if (!strip || !prev || !next || !thumb) return;
+
+            function step() {
+                const tile = strip.querySelector('.gallery-tile');
+                if (!tile) return strip.clientWidth * 0.8;
+                return tile.getBoundingClientRect().width + 4;
+            }
+
+            function update() {
+                const max = strip.scrollWidth - strip.clientWidth;
+                prev.disabled = strip.scrollLeft <= 4;
+                next.disabled = strip.scrollLeft >= max - 4;
+
+                const visibleRatio = Math.min(1, strip.clientWidth / strip.scrollWidth);
+                const scrollRatio = max > 0 ? strip.scrollLeft / max : 0;
+                const thumbWidth = visibleRatio * 100;
+                const thumbTravel = 100 - thumbWidth;
+                thumb.style.width = thumbWidth + '%';
+                thumb.style.transform = 'translateX(' + (scrollRatio * thumbTravel) + '%)';
+            }
+
+            prev.addEventListener('click', () => strip.scrollBy({ left: -step(), behavior: 'smooth' }));
+            next.addEventListener('click', () => strip.scrollBy({ left: step(), behavior: 'smooth' }));
+            strip.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update);
+            update();
+        })();
+
         const form = document.getElementById('application-form');
         const successMessage = document.getElementById('success-message');
-
         const API_BASE = '/api';
 
-        // Fetch online support config
         (async function loadSupportConfig() {
             try {
                 const response = await fetch(API_BASE + '/config');
                 const data = await response.json();
-
                 if (data.support_url) {
                     let url = data.support_url;
                     if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
@@ -885,21 +981,16 @@
                     iconImg.style.display = 'inline';
                     iconSvg.style.display = 'none';
                 }
-            } catch (e) {
-                // Config not available, keep defaults
-            }
+            } catch (e) {}
         })();
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-
             const submitBtn = form.querySelector('.submit-btn');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
-
             const formData = new FormData(form);
             const data = Object.fromEntries(formData);
-
             try {
                 const response = await fetch(API_BASE + '/submit', {
                     method: 'POST',
