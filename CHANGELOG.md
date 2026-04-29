@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-04-28 — Deploy to Tencent Cloud (secondary host)
+
+Deployed onto `tencent-server` (42.192.204.34) alongside existing services without touching any existing nginx site or systemd unit:
+
+- App at `/opt/partime-hiring/` (owned `ubuntu:ubuntu`); Python venv with Flask/openpyxl/gunicorn
+- New `partime-hiring.service` runs gunicorn on `127.0.0.1:8090`
+- New nginx site `partime-hiring.conf` listens on `:8083`, serves static, proxies `/api/*` to gunicorn
+- Verified existing services on `:80` / `:8080` / `:8082` still respond exactly as before
+- **Caveat**: Tencent Cloud Security Group blocks `:8083` by default — needs to be opened in the console for public access. See `DEPLOYMENT.md` for details
+
 ## 2026-04-28 — Localize all images and fonts for China access
 
 - Downloaded all 10 YouTube Jobs CDN photos and the 1 Unsplash avatar into `assets/images/` (~1.8MB total) and switched every `<img src>` to a relative path
