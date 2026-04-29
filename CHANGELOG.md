@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-04-28 — Tencent Cloud deploy: switch to port 80
+
+Tencent Cloud Security Group blocks `:8083` and `:8081` (only `:80`, `:8080`, `:8082` are open by default). Updated the nginx config to also listen on `:80` with `server_name 42.192.204.34 partime.42.192.204.34;`. Bare-IP access on `:80` now serves partime; droneservice still responds when reached by its `droneservice.local` hostname (its `default_server` block is untouched). Public URL is now **`http://42.192.204.34/`**. The `:8083` block stays in place for SSH-tunnel testing.
+
 ## 2026-04-28 — Deploy to Tencent Cloud (secondary host)
 
 Deployed onto `tencent-server` (42.192.204.34) alongside existing services without touching any existing nginx site or systemd unit:
