@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-04-28 — Localize all images and fonts for China access
+
+- Downloaded all 10 YouTube Jobs CDN photos and the 1 Unsplash avatar into `assets/images/` (~1.8MB total) and switched every `<img src>` to a relative path
+- Removed Google Fonts (`fonts.googleapis.com` / `fonts.gstatic.com`) — both blocked from mainland China — and replaced Roboto with a system font stack including Chinese fallbacks (`PingFang SC`, `Hiragino Sans GB`, `Microsoft YaHei`)
+- Replaced the serif `Roboto Serif` in the featured quote with a Georgia/Songti SC stack
+- The page now has zero external CDN dependencies and renders fully offline
+
 ## 2026-04-28 — Landing page refactor to YouTube Jobs design
 
 ### index.html
